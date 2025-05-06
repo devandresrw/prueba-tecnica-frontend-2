@@ -1,21 +1,20 @@
-import { memo } from 'react';
+import { forwardRef, LabelHTMLAttributes } from 'react';
 
-interface LabelComponentProps {
+interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
     htmlFor: string;
     text: string;
-    className?: string;
+    key?: string;
 }
 
-const LabelComponent = ({ htmlFor, text, className = '' }: LabelComponentProps) => {
-    return (
-        <label
-            htmlFor={htmlFor}
-            className={`font-Man block text-sm font-medium text-gray-700 dark:text-gray-300 ${className}`}
-        >
-            {text}
-        </label>
-    );
-};
+const LabelComponent = forwardRef<HTMLLabelElement, LabelProps>(
+    ({ htmlFor, text, ...props }, ref) => {
+        return (
+            <label ref={ref} htmlFor={htmlFor} {...props}>
+                {text}
+            </label>
+        );
+    }
+);
 
-export const LabelComponentMemo = memo(LabelComponent);
-LabelComponentMemo.displayName = 'LabelComponentMemo';
+LabelComponent.displayName = 'LabelComponent';
+export const Label = LabelComponent;

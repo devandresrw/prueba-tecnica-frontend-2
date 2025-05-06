@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-
+import { RecaptchaProvider } from '@/providers/RecaptchaProvider'
 const Header = dynamic(
   () => import('@/components/utils/Header').then((mod) => mod.HeaderMemo),
   { ssr: false }
@@ -13,7 +13,7 @@ const Scene = dynamic(
   { ssr: false }
 )
 const Form = dynamic(
-  () => import('@/components/forms/Form').then((mod) => mod.ContactForm),
+  () => import('@/components/forms/Form').then((mod) => mod.FormMemo),
   { ssr: false }
 )
 
@@ -28,7 +28,9 @@ export default function Home() {
           <Scene />
         </div>
         <div className="flex-1">
-          <Form />
+          <RecaptchaProvider>
+            <Form />
+          </RecaptchaProvider>
         </div>
       </section>
       <Footer />

@@ -1,312 +1,162 @@
 'use client'
-import dynamic from "next/dynamic";
-import { useFormContact } from "@/hooks/useForm";
-import { useEffect, useState } from "react";
-import { FaXRay } from "react-icons/fa";
-import clsx from "clsx";
-
-
-
-const ReCAPTCHA = dynamic(
-    () => import('@/providers/RecaptchaProvider')
-        .then(e => e.RecaptchaProvider), {
-    ssr: false
-})
-
-const Input = dynamic(
-    () => import('@/components/ui/InputComponent')
-        .then(e => e.InputComponentMemo), {
-    ssr: false
-})
+import dynamic from 'next/dynamic';
+import { memo, useEffect } from 'react';
+import { useFormHandle } from '@/hooks/useForm';
+import { useWatch } from 'react-hook-form';
 
 const Error = dynamic(
-    () => import('@/components/ui/Erorr')
-        .then(e => e.ErrorComponentMemo), {
-    ssr: false
-})
+    () => import('@/components/ui/Error').then((mod) => mod.ErrorComponentMemo),
+    { ssr: true }
+)
 
-const Label = dynamic(
-    () => import('@/components/ui/LabelComponent')
-        .then(e => e.LabelComponentMemo), {
-    ssr: false
-})
-
-const Checkbox = dynamic(
-    () => import('@/components/ui/CheckBoxComponent')
-        .then(e => e.InputComponentMemo), {
-    ssr: false
-})
-
-export const ContactForm = () => {
+const Form = () => {
     const {
         register,
         handleSubmit,
-        onSubmit,
-        errors,
-        isSubmitting,
-        isLoading,
-        sendStatus,
-        resetSendStatus,
-        Controller,
         control,
         compain,
-        setCompain
-    } = useFormContact();
+        setCompain,
+        onSubmit,
+        errors,
+        isLoading,
+        isSubmitSuccessful,
+        isSubmitting,
+        sendStatus,
+        resetSendStatus,
+        formState: { isValid }
+    } = useFormHandle();
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    // Observar el valor del campo companion para mostrar/ocultar campos condicionales
+    const companionValue = useWatch({
+        control,
+        name: 'companion',
+        defaultValue: false
+    });
+
+    // Efecto para actualizar el estado local cuando cambia el valor del checkbox
     useEffect(() => {
-        if (sendStatus.success !== undefined) {
-            setIsModalOpen(true);
-        }
-    }, [sendStatus]);
-
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-        resetSendStatus();
-    };
+        setCompain(companionValue);
+    }, [companionValue, setCompain]);
 
     return (
-        <ReCAPTCHA>
-            <div className="border-2 border-mybgdark dark:border-mybg
-            p-10 rounded-xl">
-                <form
-                    onSubmit={handleSubmit(onSubmit)}
-                    className="flex flex-col justify-center items-center
-                    gap-2">
-                    <div className="flex justify-center items-center w-full gap-5">
-                        <div className="w-full">
-                            <Label
-                                htmlFor="Nombre Completo"
-                                text="Nombre Completo:"
-                                key={'full name'} />
-                            <Controller
-                                name="fullName"
-                                control={control}
-                                render={({ field }) => (
-                                    <Input
-                                        {...field}
-                                        type="text"
-                                        placeholder="Nombre"
-                                        className={clsx(`my-input`, {
-                                            ['my-input-error']: errors.fullName
-                                        })}
-                                    />
-                                )}
-                            />
-                            <Error>{errors.fullName && errors.fullName.message}</Error>
-                        </div>
-
-                        <div className="w-full">
-                            <Label
-                                htmlFor="Correo institucional"
-                                text="Correo Institucional:"
-                                key={'email'} />
-                            <Controller
-                                name="email"
-                                control={control}
-                                render={({ field }) => (
-                                    <Input
-                                        {...field}
-                                        type="email"
-                                        placeholder="tuemail@edu.co"
-                                        className={clsx(`my-input`, {
-                                            ['my-input-error']: errors.email
-                                        })}
-                                    />
-                                )}
-                            />
-                            <Error>{errors.email && errors.email.message}</Error>
-                        </div>
-                    </div>
-
-                    <div className="flex justify-center items-center w-full
-                    gap-5">
-                        <div className="flex-1">
-                            <Label
-                                htmlFor="semester"
-                                text="Semestre actual:"
-                                key={'semester'} />
-                            <Controller
-                                name="semester"
-                                control={control}
-                                render={({ field }) => (
-                                    <Input
-                                        {...field}
-                                        type="number"
-                                        placeholder="de 1 a 10"
-                                        className={clsx(`my-input`, {
-                                            ['my-input-error']: errors.semester
-                                        })}
-                                    />
-                                )}
-                            />
-                            <Error>{errors.semester && errors.semester.message}</Error>
-                        </div>
-                        <div className="flex flex-col gap-3 flex-1">
-                            <div className="flex gap-5">
-                                <Label
-                                    htmlFor="companion"
-                                    text="¿Tienes alguna acompañante?"
-                                    key={'companion'} />
-                                <Controller
-                                    name="companion"
-                                    control={control}
-                                    render={({ field: { onChange, value, name, ref, ...restField } }) => (
-                                        <Checkbox
-                                            id="companion"
-                                            type="checkbox"
-                                            checked={value}
-                                            onChange={(e) => {
-                                                onChange(e); // Actualiza react-hook-form
-                                                setCompain(e.target.checked); // Actualiza el estado local
-                                            }}
-                                            name={name}
-                                            {...restField}
-                                            className="my-checkbox"
-                                        />
-                                    )}
-                                />
-                            </div>
-                            {compain && (
-                                <div className="">
-                                    <Label
-                                        htmlFor="companionName"
-                                        text="Nombre del acompañante:"
-                                        key={'companionName'} />
-                                    <Controller
-                                        name="companionName"
-                                        control={control}
-                                        render={({ field }) => (
-                                            <Input
-                                                {...field}
-                                                type="text"
-                                                placeholder="Nombre completo del acompañante"
-                                                className={clsx(`my-input`, {
-                                                    ['my-input-error']: errors.companionName
-                                                })}
-                                            />
-                                        )}
-                                    />
-                                    <Error>{errors.companionName && errors.companionName.message}</Error>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                    <div className="flex justify-center items-center w-full gap-5">
-                        <Label htmlFor="terms" text="¿Aceptas los términos y condiciones?" key={'terms'} />
-                        <Controller
-                            name="terms"
-                            control={control}
-                            render={({ field: { onChange, value, ...restField } }) => (
-                                <Checkbox
-                                    id="terms"
-                                    type="checkbox"
-                                    checked={value}
-                                    {...register('terms')}
-                                    onChange={(e) => {
-                                        onChange(e);
-                                    }}
-                                    className="my-checkbox"
-                                />
-                            )}
+        <div className='border-2 border-mybgdark dark:border-mybg rounded-lg p-5'>
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
+                <div className='flex flex-col md:flex-row gap-4 mb-4'>
+                    <div className='flex-1'>
+                        <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Nombre completo*
+                        </label>
+                        <input
+                            {...register('fullName')}
+                            type="text"
+                            id="fullName"
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
                         />
+                        <Error>{errors.fullName?.message}</Error>
                     </div>
-
-                    <div className="w-full">
-                        <button
-                            type="submit"
-                            disabled={isSubmitting || isLoading}
-                            className="
-                        bg-[#3e3d3d]/10 px-8 py-2 rounded-lg shadow-lg border-[1px] border-white/[0.18]
-                        backdrop-blur-[8.5px] backdrop-filter text-white text-sm w-full
-                        hover:bg-[#3e3d3d]/40 transition duration-300 ease-in-out
-                        disabled:opacity-50 disabled:cursor-not-allowed">
-                            {isSubmitting || isLoading ? 'Enviando...' : 'Enviar'}
-                        </button>
+                    <div className='flex-1'>
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Email institucional (.edu.co)*
+                        </label>
+                        <input
+                            {...register('email')}
+                            type="email"
+                            id="email"
+                            placeholder="correo@universidad.edu.co"
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
+                        />
+                        <Error>{errors.email?.message}</Error>
                     </div>
-                </form>
-                <FeedbackModal
-                    isOpen={isModalOpen}
-                    onClose={handleCloseModal}
-                    success={sendStatus.success}
-                    message={sendStatus.message}
-                />
-            </div>
-        </ReCAPTCHA>
-
-    )
-}
-
-
-
-
-// Componente Modal
-const FeedbackModal = ({
-    isOpen,
-    onClose,
-    success,
-    message
-}: {
-    isOpen: boolean;
-    onClose: () => void;
-    success?: boolean;
-    message?: string;
-}) => {
-    if (!isOpen) return null;
-
-    return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <div
-                className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-                onClick={onClose}
-            />
-            {/* Contenedor del modal con efecto glassmorphism */}
-            <div className="relative bg-[#3e3d3d]/20 p-6 rounded-lg shadow-xl border-[1px] border-white/[0.18]
-                backdrop-blur-[12px] backdrop-filter w-11/12 max-w-md z-10 animate-fade-in-up">
-                {/* Botón de cerrar */}
-                <button
-                    onClick={onClose}
-                    className="absolute top-3 right-3 text-white/80 hover:text-white"
-                >
-                    <FaXRay className="h-6 w-6" />
-                </button>
-                {/* Icono de éxito/error */}
-                <div className="flex justify-center mb-4">
-                    {success ? (
-                        <div className="h-16 w-16 rounded-full bg-green-500/20 flex items-center justify-center">
-                            <svg className="h-10 w-10 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                            </svg>
-                        </div>
-                    ) : (
-                        <div className="h-16 w-16 rounded-full bg-red-500/20 flex items-center justify-center">
-                            <svg className="h-10 w-10 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </div>
-                    )}
                 </div>
-                {/* Título */}
-                <h3 className="text-xl font-semibold text-center text-white mb-2">
-                    {success ? '¡Mensaje enviado!' : 'Error al enviar'}
-                </h3>
-                {/* Mensaje */}
-                <p className="text-center text-white/80 mb-4">
-                    {message || (success ?
-                        'Tu mensaje ha sido enviado correctamente. Me pondré en contacto contigo pronto.' :
-                        'Ocurrió un error al enviar tu mensaje. Por favor intenta nuevamente.'
-                    )}
-                </p>
-                {/* Botón */}
-                <button
-                    onClick={onClose}
-                    className="bg-[#3e3d3d]/30 px-6 py-2 rounded-lg shadow-lg border-[1px] border-white/[0.18]
-                        backdrop-blur-[8.5px] backdrop-filter text-white text-sm w-full
-                        hover:bg-[#3e3d3d]/50 transition duration-300 ease-in-out"
-                >
-                    {success ? 'Genial' : 'Intentar nuevamente'}
-                </button>
-            </div>
+
+                <div className='flex flex-col md:flex-row gap-4 mb-4'>
+                    <div className='flex-1'>
+                        <label htmlFor="semester" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Semestre (1-10)*
+                        </label>
+                        <input
+                            {...register('semester')}
+                            type="number"
+                            id="semester"
+                            min="1"
+                            max="10"
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
+                        />
+                        <Error>{errors.semester?.message}</Error>
+                    </div>
+                    <div className='flex-1'></div>
+                </div>
+
+                <div className='mb-4'>
+                    <div className="flex items-center">
+                        <input
+                            {...register('companion')}
+                            type="checkbox"
+                            id="companion"
+                            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                        />
+                        <label htmlFor="companion" className="ml-2 block text-sm text-gray-900 dark:text-gray-300">
+                            ¿Vendrás con acompañante?
+                        </label>
+                    </div>
+                </div>
+
+                {companionValue && (
+                    <div className='mb-4'>
+                        <label htmlFor="companionName" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Nombre del acompañante*
+                        </label>
+                        <input
+                            {...register('companionName')}
+                            type="text"
+                            id="companionName"
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
+                        />
+                        <Error>{errors.companionName?.message}</Error>
+                    </div>
+                )}
+
+                <div className='mb-4'>
+                    <label className="flex items-center">
+                        <input
+                            {...register('terms')}
+                            type="checkbox"
+                            id="terms"
+                            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                        />
+                        <span className="ml-2 block text-sm text-gray-900 dark:text-gray-300">
+                            Acepto los términos y condiciones*
+                        </span>
+                    </label>
+                    <Error>{errors.terms?.message}</Error>
+                </div>
+
+                <div className='text-center'>
+                    <button
+                        type='submit'
+                        disabled={isSubmitting || !isValid}
+                        className={`px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+                            ${(isSubmitting || !isValid) ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    >
+                        {isSubmitting ? 'Enviando...' : 'Enviar'}
+                    </button>
+                </div>
+
+                {sendStatus.success === true && (
+                    <div className="mt-4 p-4 bg-green-100 border border-green-200 text-green-700 rounded-md">
+                        ¡Registro enviado con éxito! {sendStatus.message}
+                    </div>
+                )}
+
+                {sendStatus.success === false && (
+                    <div className="mt-4 p-4 bg-red-100 border border-red-200 text-red-700 rounded-md">
+                        Ha ocurrido un error: {sendStatus.message || 'Por favor, inténtalo de nuevo.'}
+                    </div>
+                )}
+            </form>
         </div>
     );
 };
+
+export const FormMemo = memo(Form);
+FormMemo.displayName = 'FormMemo';
