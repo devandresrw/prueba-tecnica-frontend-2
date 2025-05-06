@@ -44,28 +44,24 @@ export const useFormHandle = () => {
     });
 
     const onSubmit = async (data: FormType) => {
-        console.log("Datos del formulario:", data);
         try {
-            // Ejecutar reCAPTCHA y obtener token
-            let recaptchaToken: string | undefined;
+            let recaptchaToken = '';
+
+            // Verifica que executeRecaptcha exista antes de llamarlo
             if (executeRecaptcha) {
                 try {
-                    recaptchaToken = await executeRecaptcha('formulario_contacto');
+                    recaptchaToken = await executeRecaptcha('formulario_registro');
+                    console.log('Token reCAPTCHA generado');
                 } catch (recaptchaError) {
-                    console.warn("No se pudo ejecutar reCAPTCHA:", recaptchaError);
-                    // Continuar sin token de reCAPTCHA
+                    console.error('Error al ejecutar reCAPTCHA:', recaptchaError);
                 }
+            } else {
+                console.warn('reCAPTCHA no disponible');
             }
 
-            // Enviar datos al servicio de registro - con o sin token
-            const response = await RegisterService.registerUser({
-                ...data,
-                recaptchaToken: recaptchaToken || ''
-            });
-
-            // Resto del código igual...
+            // Resto de tu código para enviar datos...
         } catch (error) {
-            // Manejador de errores...
+            // Manejo de errores...
         }
     };
 

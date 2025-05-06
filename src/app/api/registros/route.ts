@@ -26,14 +26,28 @@ export async function POST(request: NextRequest) {
 
         // Verificar reCAPTCHA (esto sería una implementación real)
         if (data.recaptchaToken) {
-            // Aquí irían las verificaciones del token con Google
-            // const recaptchaValid = await verifyRecaptchaToken(data.recaptchaToken);
-            // if (!recaptchaValid) {
-            //   return NextResponse.json(
-            //     { success: false, message: 'Verificación reCAPTCHA fallida' },
-            //     { status: 400 }
-            //   );
-            // }
+            try {
+                const recaptchaResponse = await fetch(
+                    `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${data.recaptchaToken}`,
+                    { method: 'POST' }
+                );
+
+                const recaptchaResult = await recaptchaResponse.json();
+
+                // Si reCAPTCHA falla, rechaza la petición
+                if (!recaptchaResult.success || recaptchaResult.score < 0.5) {
+                    console.log('reCAPTCHA verificación fallida:', recaptchaResult);
+                    return NextResponse.json(
+                        { success: false, message: 'Verificación de seguridad fallida' },
+                        { status: 400 }
+                    );
+                }
+
+                console.log('reCAPTCHA verificado con score:', recaptchaResult.score);
+            } catch (recaptchaError) {
+                console.error('Error al verificar reCAPTCHA:', recaptchaError);
+                // Continuar con el proceso si hay un error en reCAPTCHA
+            }
         }
 
         // Crear nuevo registro con ID único
