@@ -13,7 +13,7 @@ const Scene = dynamic(
   { ssr: false }
 )
 const Form = dynamic(
-  () => import('@/components/wrappers/FormWrapper').then((mod) => mod.WrapperFormMemo),
+  () => import('@/components/forms/Form').then((mod) => mod.ContactForm),
   { ssr: false }
 )
 

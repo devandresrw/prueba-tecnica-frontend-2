@@ -10,7 +10,7 @@ const LabelComponent = ({ htmlFor, text, className = '' }: LabelComponentProps) 
     return (
         <label
             htmlFor={htmlFor}
-            className={`block text-sm font-medium text-gray-700 dark:text-gray-300 ${className}`}
+            className={`font-Man block text-sm font-medium text-gray-700 dark:text-gray-300 ${className}`}
         >
             {text}
         </label>

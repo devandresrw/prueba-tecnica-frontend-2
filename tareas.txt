@@ -1,0 +1,7 @@
+1: Pasar todo componentes dinamicos
+1: Scenas individuales o instancias. 
+2: Seo
+3: Seo de los post 
+4: Mejora de los singles post 
+
+

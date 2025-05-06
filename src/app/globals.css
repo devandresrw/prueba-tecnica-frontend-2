@@ -2,3 +2,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.my-input{
+    @apply border-2 border-gray-300 rounded-lg p-2;
+}
+.my-input:focus{
+    @apply border-blue-500 outline-none;
+}
+.my-input:focus-visible{
+    @apply border-blue-500 outline-none;
+}
+.my-input-error{
+    @apply border-red-500;
+
+}
