@@ -22,12 +22,26 @@ export const FormSchema = z.object({
         }),
 }).superRefine((data, ctx) => {
     // Validación condicional: si companion está marcado, companionName es obligatorio
-    if (data.companion === true && (!data.companionName || data.companionName.trim() === "")) {
-        ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "Debes proporcionar el nombre del acompañante",
-            path: ["companionName"]
-        });
+    if (data.companion === true) {
+        if (!data.companionName || data.companionName.trim() === "") {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "Debes proporcionar el nombre del acompañante",
+                path: ["companionName"]
+            });
+        } else if (data.companionName.length < 10) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "El nombre del acompañante debe tener al menos 10 caracteres",
+                path: ["companionName"]
+            });
+        } else if (data.companionName.length > 50) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "Solo nombres y apellidos",
+                path: ["companionName"]
+            });
+        }
     }
 });
 

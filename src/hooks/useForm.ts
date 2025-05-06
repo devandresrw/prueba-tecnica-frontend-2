@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { FormSchema, type FormType } from '@/schemas/form.schema'
 import { useState } from 'react'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
-import { RegisterService } from "@/services/register.service"
+import { RegistroService } from '@/services/register.service'
 
 // Definimos un tipo para el estado de envío
 type SendStatus = {
@@ -35,7 +35,7 @@ export const useFormHandle = () => {
         defaultValues: {
             fullName: '',
             email: '',
-            semester: 1,
+            semester: undefined,
             companion: false,
             companionName: '',
             terms: false
@@ -44,24 +44,36 @@ export const useFormHandle = () => {
     });
 
     const onSubmit = async (data: FormType) => {
+        console.log("Datos del formulario:", data);
         try {
-            let recaptchaToken = '';
-
-            // Verifica que executeRecaptcha exista antes de llamarlo
+            // Ejecutar reCAPTCHA y obtener token
+            let recaptchaToken: string | undefined;
             if (executeRecaptcha) {
                 try {
                     recaptchaToken = await executeRecaptcha('formulario_registro');
-                    console.log('Token reCAPTCHA generado');
                 } catch (recaptchaError) {
-                    console.error('Error al ejecutar reCAPTCHA:', recaptchaError);
+                    console.warn("No se pudo ejecutar reCAPTCHA:", recaptchaError);
                 }
-            } else {
-                console.warn('reCAPTCHA no disponible');
             }
 
-            // Resto de tu código para enviar datos...
+            // Enviar datos utilizando el servicio
+            const response = await RegistroService.submitForm(data, recaptchaToken);
+
+            // Establecer estado de éxito
+            setSendStatus({
+                success: true,
+                message: response.message || 'Registro completado con éxito'
+            });
+
+            // Resetear formulario
+            reset();
+
         } catch (error) {
-            // Manejo de errores...
+            console.error("Error al enviar formulario:", error);
+            setSendStatus({
+                success: false,
+                message: error instanceof Error ? error.message : 'Error al procesar el registro'
+            });
         }
     };
 

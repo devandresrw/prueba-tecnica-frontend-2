@@ -2,10 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 import { FormSchema } from '@/schemas/form.schema';
 
-// Simulamos una "base de datos" en memoria para desarrollo
-let registrations: any[] = [];
-
-// Manejar solicitud POST para crear un nuevo registro
+// Implementación de la API con IndexedDB
 export async function POST(request: NextRequest) {
     try {
         // Obtener y validar los datos
@@ -24,7 +21,7 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Verificar reCAPTCHA (esto sería una implementación real)
+        // Verificar reCAPTCHA
         if (data.recaptchaToken) {
             try {
                 const recaptchaResponse = await fetch(
@@ -34,7 +31,6 @@ export async function POST(request: NextRequest) {
 
                 const recaptchaResult = await recaptchaResponse.json();
 
-                // Si reCAPTCHA falla, rechaza la petición
                 if (!recaptchaResult.success || recaptchaResult.score < 0.5) {
                     console.log('reCAPTCHA verificación fallida:', recaptchaResult);
                     return NextResponse.json(
@@ -46,7 +42,6 @@ export async function POST(request: NextRequest) {
                 console.log('reCAPTCHA verificado con score:', recaptchaResult.score);
             } catch (recaptchaError) {
                 console.error('Error al verificar reCAPTCHA:', recaptchaError);
-                // Continuar con el proceso si hay un error en reCAPTCHA
             }
         }
 
@@ -57,14 +52,14 @@ export async function POST(request: NextRequest) {
             createdAt: new Date().toISOString()
         };
 
-        // En un entorno real, aquí guardaríamos en una base de datos
-        registrations.push(newRegistration);
+        // La operación con IndexedDB se realiza en el frontend
+        // Aquí solo simulamos una respuesta exitosa para API directas
 
         // Devolver respuesta exitosa
         return NextResponse.json({
             success: true,
             message: 'Registro creado correctamente',
-            id: newRegistration.id
+            data: newRegistration
         }, { status: 201 });
 
     } catch (error) {
@@ -78,5 +73,10 @@ export async function POST(request: NextRequest) {
 
 // Manejar solicitud GET para obtener todos los registros
 export async function GET() {
-    return NextResponse.json(registrations);
+    // En un endpoint real, aquí se accedería a la base de datos
+    // Para APIs directas, devolvemos un mensaje informativo
+    return NextResponse.json({
+        message: "Para ver los registros, visite la página /registros",
+        info: "Los datos se almacenan en IndexedDB del navegador"
+    });
 }
