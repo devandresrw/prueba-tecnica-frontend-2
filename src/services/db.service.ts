@@ -187,6 +187,58 @@ export class IndexedDBService {
             return false;
         }
     }
+
+    async getRegistro(id: string): Promise<RegistroExtendido | undefined> {
+        if (!this.db) await this.init();
+        return new Promise((resolve, reject) => {
+            const transaction = this.db!.transaction([STORE_NAME], "readonly");
+            const store = transaction.objectStore(STORE_NAME);
+            const request = store.get(id);
+
+            request.onsuccess = () => {
+                resolve(request.result);
+            };
+
+            request.onerror = (event) => {
+                console.error("Error al obtener registro por ID", event);
+                reject(new Error("Error al obtener registro"));
+            };
+        });
+    }
+
+    // Actualizar un registro existente
+    async updateRegistro(id: string, data: Partial<RegistroExtendido>): Promise<boolean> {
+        if (!this.db) await this.init();
+
+        return new Promise(async (resolve, reject) => {
+            try {
+                // Primero obtenemos el registro existente
+                const registro = await this.getRegistro(id);
+                if (!registro) {
+                    resolve(false);
+                    return;
+                }
+
+                // Actualizamos con los nuevos datos
+                const updatedRegistro = { ...registro, ...data };
+
+                const transaction = this.db!.transaction([STORE_NAME], "readwrite");
+                const store = transaction.objectStore(STORE_NAME);
+                const request = store.put(updatedRegistro);
+
+                request.onsuccess = () => {
+                    resolve(true);
+                };
+
+                request.onerror = (event) => {
+                    console.error("Error al actualizar registro", event);
+                    reject(new Error("Error al actualizar registro"));
+                };
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
 }
 
 // Exportar una instancia única

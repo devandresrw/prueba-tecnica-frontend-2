@@ -168,8 +168,22 @@ export default function Registros() {
                                     <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                                         {registros.map(registro => (
                                             <tr key={registro.id}>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{registro.id.slice(0, 8)}...</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{registro.fullName}</td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                                    <a
+                                                        href={`/registros/${registro.id}`}
+                                                        className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 hover:underline"
+                                                    >
+                                                        {registro.id.slice(0, 8)}...
+                                                    </a>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                                                    <a
+                                                        href={`/registros/${registro.id}`}
+                                                        className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 hover:underline"
+                                                    >
+                                                        {registro.fullName}
+                                                    </a>
+                                                </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{registro.email}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{registro.semester}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
@@ -178,11 +192,17 @@ export default function Registros() {
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                                     {new Date(registro.createdAt).toLocaleDateString()}
                                                 </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm flex space-x-2">
+                                                    <a
+                                                        href={`/registros/${registro.id}`}
+                                                        className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 focus:outline-none"
+                                                    >
+                                                        Ver
+                                                    </a>
                                                     <button
                                                         onClick={() => handleDeleteRegistro(registro.id)}
                                                         disabled={deletingId === registro.id}
-                                                        className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 focus:outline-none"
+                                                        className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 focus:outline-none ml-3"
                                                     >
                                                         {deletingId === registro.id ? 'Eliminando...' : 'Eliminar'}
                                                     </button>
