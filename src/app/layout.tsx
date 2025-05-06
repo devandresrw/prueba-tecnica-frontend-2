@@ -10,7 +10,7 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: "Prueba - Frotend 2",
+  title: "Prueba Frotend II - Andres R.W.",
   description: "Por Andrés R.W. para Innerconsulting",
 };
 
@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body>
+      <body className="">
         {children}
       </body>
     </html>
