@@ -1,4 +1,3 @@
-import React from 'react';
 import { FiEye, FiTrash } from 'react-icons/fi';
 import { ImSpinner8 } from 'react-icons/im';
 import { useRouter } from 'next/navigation';
@@ -20,25 +19,21 @@ interface RegistroRowProps {
     deletingId: string | null;
 }
 
-const RegistroRow: React.FC<RegistroRowProps> = ({ registro, onDelete, deletingId }) => {
+const RegistroRow = ({ registro, onDelete, deletingId }: RegistroRowProps) => {
     const router = useRouter();
     const isDeleting = deletingId === registro.id;
     const formattedDate = new Date(registro.createdAt).toLocaleDateString();
 
 
-    // Acortar el ID para mostrarlo
     const shortId = registro.id.substring(0, 8) + '...';
 
-    // Función para navegar al detalle del registro
     const handleViewClick = () => {
-        // Implementar navegación al detalle
         console.log(`Ver registro: ${registro.id}`);
         router.push(`/registros/${registro.id}`);
     };
 
     return (
         <tr className="hover:bg-gray-50 dark:hover:bg-gray-700">
-            {/* ID - Visible solo en escritorio */}
             <td className="hidden lg:table-cell px-3 py-2 sm:px-4 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                 <button
                     onClick={handleViewClick}
@@ -48,7 +43,6 @@ const RegistroRow: React.FC<RegistroRowProps> = ({ registro, onDelete, deletingI
                 </button>
             </td>
 
-            {/* Nombre - Visible en todos los dispositivos */}
             <td className="px-3 py-2 sm:px-4 sm:py-3 whitespace-nowrap text-xs sm:text-sm font-medium text-gray-900 dark:text-white truncate max-w-[180px]">
                 <button
                     onClick={handleViewClick}
@@ -58,17 +52,14 @@ const RegistroRow: React.FC<RegistroRowProps> = ({ registro, onDelete, deletingI
                 </button>
             </td>
 
-            {/* Email - Visible en tablet y desktop */}
             <td className="hidden sm:table-cell px-3 py-2 sm:px-4 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500 dark:text-gray-400 truncate max-w-[200px]">
                 {registro.email}
             </td>
 
-            {/* Semestre - Visible solo en escritorio */}
             <td className="hidden lg:table-cell px-3 py-2 sm:px-4 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                 {registro.semester}
             </td>
 
-            {/* Acompañante - Visible solo en escritorio */}
             <td className="hidden lg:table-cell px-3 py-2 sm:px-4 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                 {registro.companion ? (
                     <span title={registro.companionName || ""}>Sí</span>
@@ -77,12 +68,10 @@ const RegistroRow: React.FC<RegistroRowProps> = ({ registro, onDelete, deletingI
                 )}
             </td>
 
-            {/* Fecha - Visible solo en escritorio */}
             <td className="hidden lg:table-cell px-3 py-2 sm:px-4 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                 {formattedDate}
             </td>
 
-            {/* Acciones - Visible en todos los dispositivos */}
             <td className="px-3 py-2 sm:px-4 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-right">
                 <div className="flex justify-end items-center space-x-3">
                     <button

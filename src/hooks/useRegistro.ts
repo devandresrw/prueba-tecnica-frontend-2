@@ -2,12 +2,10 @@ import { useState, useEffect } from 'react';
 import { indexedDBService } from '@/services/db.service';
 
 export function useRegistro(registroId: string) {
-    // Estados para el manejo de un registro individual
     const [registro, setRegistro] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    // Cargar el registro cuando se proporciona un ID
     useEffect(() => {
         async function cargarRegistro() {
             try {
@@ -31,7 +29,6 @@ export function useRegistro(registroId: string) {
         cargarRegistro();
     }, [registroId]);
 
-    // Eliminar el registro actual
     const handleEliminar = async (onSuccess?: () => void) => {
         if (!window.confirm('¿Estás seguro que deseas eliminar este registro?')) {
             return;

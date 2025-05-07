@@ -21,7 +21,6 @@ export const FormSchema = z.object({
             message: 'Debes aceptar los términos y condiciones',
         }),
 }).superRefine((data, ctx) => {
-    // Validación condicional: si companion está marcado, companionName es obligatorio
     if (data.companion === true) {
         if (!data.companionName || data.companionName.trim() === "") {
             ctx.addIssue({
@@ -32,7 +31,7 @@ export const FormSchema = z.object({
         } else if (data.companionName.length < 10) {
             ctx.addIssue({
                 code: z.ZodIssueCode.custom,
-                message: "El nombre del acompañante debe tener al menos 10 caracteres",
+                message: "Nombre completo del acompañante",
                 path: ["companionName"]
             });
         } else if (data.companionName.length > 50) {

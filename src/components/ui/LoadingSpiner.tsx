@@ -1,14 +1,13 @@
-import React from 'react';
 
-interface LoadingSpinnerProps {
+type LoadingSpinnerProps = {
     message?: string;
     fullScreen?: boolean;
 }
 
-export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
+export const LoadingSpinner = ({
     message = 'Cargando...',
     fullScreen = true
-}) => {
+}: LoadingSpinnerProps) => {
     return (
         <div className={`
       flex items-center justify-center bg-mybg dark:bg-mybgdark

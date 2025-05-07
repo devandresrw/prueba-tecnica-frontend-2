@@ -6,7 +6,6 @@ export default function RegistroDetalle({ params }: { params: { id: string } }) 
     const router = useRouter();
     const { registro, loading, error, handleEliminar } = useRegistro(params.id);
 
-    // Manejador que llama a handleEliminar y navega tras éxito
     const onEliminar = () => {
         handleEliminar(() => router.push('/registros'));
     };
@@ -52,7 +51,6 @@ export default function RegistroDetalle({ params }: { params: { id: string } }) 
                 </div>
 
                 <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 sm:p-6">
-                    {/* Aquí mostramos el contenido real del registro */}
                     {registro && (
                         <div className="space-y-3 sm:space-y-4">
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
@@ -68,9 +66,7 @@ export default function RegistroDetalle({ params }: { params: { id: string } }) 
                                     </div>
                                 )}
 
-                                {/* Mostrar las demás propiedades dinámicamente */}
                                 {Object.entries(registro).map(([key, value]) => {
-                                    // Excluir id y nombre que ya mostramos arriba
                                     if (key === 'id' || key === 'nombre') return null;
 
                                     return (

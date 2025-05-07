@@ -5,7 +5,7 @@ export const RegistroService = {
     submitForm: async (formData: FormType, recaptchaToken?: string) => {
         try {
             // 1. Enviar datos a la API
-            const response = await fetch('/api/registros', {
+            const response = await fetch('/api/inscripciones', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

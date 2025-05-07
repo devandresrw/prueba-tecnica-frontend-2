@@ -21,15 +21,11 @@ export default function Registros() {
         handleDeleteAll
     } = useRegistros();
 
-    // Estado para el modal de confirmación de eliminación global
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-
-    // Manejador para solicitar confirmación antes de eliminar todos
     const requestDeleteAll = () => {
         setShowDeleteConfirmation(true);
     };
 
-    // Manejador para confirmar eliminación de todos los registros
     const confirmDeleteAll = () => {
         handleDeleteAll();
         setShowDeleteConfirmation(false);
@@ -79,8 +75,6 @@ export default function Registros() {
                     </div>
                 )}
             </div>
-
-            {/* Modal de confirmación para eliminar todos los registros */}
             <DeleteConfirmation
                 isOpen={showDeleteConfirmation}
                 onConfirm={confirmDeleteAll}

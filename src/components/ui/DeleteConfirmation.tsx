@@ -1,6 +1,5 @@
-import React from 'react';
 
-interface DeleteConfirmationProps {
+type DeleteConfirmationProps = {
     isOpen: boolean;
     onConfirm: () => void;
     onCancel: () => void;
@@ -10,7 +9,7 @@ interface DeleteConfirmationProps {
     cancelLabel?: string;
 }
 
-export const DeleteConfirmation: React.FC<DeleteConfirmationProps> = ({
+export const DeleteConfirmation = ({
     isOpen,
     onConfirm,
     onCancel,
@@ -18,7 +17,7 @@ export const DeleteConfirmation: React.FC<DeleteConfirmationProps> = ({
     message = "¿Estás seguro que deseas eliminar este registro? Esta acción no se puede deshacer.",
     confirmLabel = "Eliminar",
     cancelLabel = "Cancelar"
-}) => {
+}: DeleteConfirmationProps) => {
     if (!isOpen) return null;
 
     return (

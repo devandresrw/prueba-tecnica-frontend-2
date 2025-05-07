@@ -12,7 +12,6 @@ const SvgModel = dynamic(
 
 const Scene = () => {
     const theme = useThemeStore((state) => state.theme);
-    // Especificamos el tipo correcto como una tupla de un elemento
     const [backgroundColor, setBackgroundColor] = useState<[ColorRepresentation]>(['#F5EAF7']);
 
     useEffect(() => {

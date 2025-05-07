@@ -1,8 +1,8 @@
 import { memo, InputHTMLAttributes, forwardRef } from 'react';
 
 interface CheckBoxComponentProps extends InputHTMLAttributes<HTMLInputElement> {
-    id: string; // ID único para asociar con un label
-    className?: string; // Clases adicionales para personalización
+    id: string;
+    className?: string;
 }
 
 const InputComponent = forwardRef<HTMLInputElement, CheckBoxComponentProps>(

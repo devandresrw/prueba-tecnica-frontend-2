@@ -1,4 +1,3 @@
-import React from 'react';
 
 interface EmptyStateProps {
     message?: string;
@@ -14,7 +13,7 @@ export const EmptyState = ({
     loadingLabel = 'Generando...',
     isLoading = false,
     onAction = () => { },
-}) => {
+}: EmptyStateProps) => {
     return (
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 text-center">
             <p className="text-gray-700 dark:text-gray-300 mb-4">

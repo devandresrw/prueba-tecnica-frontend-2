@@ -1,7 +1,6 @@
-import React from 'react';
 import Link from 'next/link';
 
-interface PageHeaderProps {
+type PageHeaderProps = {
     title: string;
     backUrl?: string;
     backLabel?: string;
@@ -12,7 +11,7 @@ export const PageHeader = ({
     title = '',
     backUrl = '/',
     backLabel = 'Volver al formulario'
-}) => {
+}: PageHeaderProps) => {
     return (
         <div className="flex flex-col gap-5 justify-between items-center mb-6
         md:flex-row">

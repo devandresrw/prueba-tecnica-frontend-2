@@ -12,7 +12,6 @@ interface RegistroExtendido extends FormType {
 export class IndexedDBService {
     private db: IDBDatabase | null = null;
 
-    // Inicializar la base de datos
     async init(): Promise<boolean> {
         return new Promise((resolve, reject) => {
             if (!window.indexedDB) {
@@ -37,7 +36,7 @@ export class IndexedDBService {
             request.onupgradeneeded = (event) => {
                 const db = (event.target as IDBOpenDBRequest).result;
 
-                // Crear el almacén de objetos si no existe
+
                 if (!db.objectStoreNames.contains(STORE_NAME)) {
                     const store = db.createObjectStore(STORE_NAME, { keyPath: "id" });
                     store.createIndex("email", "email", { unique: true });
@@ -48,7 +47,6 @@ export class IndexedDBService {
         });
     }
 
-    // Agregar un registro
     async addRegistro(registro: RegistroExtendido): Promise<string> {
         if (!this.db) await this.init();
 
@@ -68,7 +66,7 @@ export class IndexedDBService {
         });
     }
 
-    // Verificar si hay registros
+
     async hasRegistros(): Promise<boolean> {
         if (!this.db) await this.init();
 
@@ -87,7 +85,7 @@ export class IndexedDBService {
         });
     }
 
-    // Obtener todos los registros
+
     async getAllRegistros(): Promise<RegistroExtendido[]> {
         if (!this.db) await this.init();
 
@@ -109,9 +107,6 @@ export class IndexedDBService {
 
 
 
-    // Agregar estos dos métodos al servicio existente
-
-    // Eliminar un registro por su ID
     async deleteRegistro(id: string): Promise<boolean> {
         if (!this.db) await this.init();
 
@@ -132,7 +127,7 @@ export class IndexedDBService {
         });
     }
 
-    // Eliminar todos los registros
+
     async deleteAllRegistros(): Promise<boolean> {
         if (!this.db) await this.init();
 
@@ -153,7 +148,6 @@ export class IndexedDBService {
         });
     }
 
-    // Generar datos semilla
     async seedData(count: number = 10): Promise<boolean> {
         if (!this.db) await this.init();
 
@@ -161,10 +155,8 @@ export class IndexedDBService {
             const transaction = this.db!.transaction([STORE_NAME], "readwrite");
             const store = transaction.objectStore(STORE_NAME);
 
-            // Limpiar datos existentes
             store.clear();
 
-            // Generar nuevos datos
             for (let i = 0; i < count; i++) {
                 const hasCompanion = Math.random() > 0.7;
                 const registro: RegistroExtendido = {
@@ -206,20 +198,20 @@ export class IndexedDBService {
         });
     }
 
-    // Actualizar un registro existente
+
     async updateRegistro(id: string, data: Partial<RegistroExtendido>): Promise<boolean> {
         if (!this.db) await this.init();
 
         return new Promise(async (resolve, reject) => {
             try {
-                // Primero obtenemos el registro existente
+
                 const registro = await this.getRegistro(id);
                 if (!registro) {
                     resolve(false);
                     return;
                 }
 
-                // Actualizamos con los nuevos datos
+
                 const updatedRegistro = { ...registro, ...data };
 
                 const transaction = this.db!.transaction([STORE_NAME], "readwrite");
@@ -241,5 +233,5 @@ export class IndexedDBService {
     }
 }
 
-// Exportar una instancia única
+
 export const indexedDBService = new IndexedDBService();

@@ -6,22 +6,15 @@ import { useState, useEffect } from 'react'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { RegistroService } from '@/services/register.service'
 
-// Definimos un tipo para el estado de envío
 type SendStatus = {
     success?: boolean;
     message?: string;
 }
 
-// Tipo extendido con token de reCAPTCHA
-type ContactFormDataWithToken = FormType & {
-    recaptchaToken: string;
-}
 
 export const useFormHandle = () => {
-    // Hook de reCAPTCHA
     const { executeRecaptcha } = useGoogleReCaptcha();
 
-    // Definimos el estado para los mensajes de éxito/error
     const [sendStatus, setSendStatus] = useState<SendStatus>({});
     const [compain, setCompain] = useState<boolean>(false);
     const [isFormValid, setIsFormValid] = useState(false);
@@ -77,7 +70,6 @@ export const useFormHandle = () => {
     const onSubmit = async (data: FormType) => {
         console.log("Datos del formulario:", data);
         try {
-            // Ejecutar reCAPTCHA y obtener token
             let recaptchaToken: string | undefined;
             if (executeRecaptcha) {
                 try {
@@ -87,16 +79,13 @@ export const useFormHandle = () => {
                 }
             }
 
-            // Enviar datos utilizando el servicio
             const response = await RegistroService.submitForm(data, recaptchaToken);
 
-            // Establecer estado de éxito
             setSendStatus({
                 success: true,
                 message: response.message || 'Registro completado con éxito'
             });
 
-            // Resetear formulario
             reset();
 
         } catch (error) {
@@ -122,6 +111,6 @@ export const useFormHandle = () => {
         compain,
         setValue,
         resetSendStatus: () => setSendStatus({}),
-        formState: { isValid: isFormValid } // Añadir formState aquí
+        formState: { isValid: isFormValid }
     };
 };

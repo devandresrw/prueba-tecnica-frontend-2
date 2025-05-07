@@ -1,7 +1,6 @@
-import React from 'react';
 import Link from 'next/link';
 
-interface ActionButtonsProps {
+type ActionButtonsProps = {
     registroId: string;
     onDelete: (id: string) => void;
     isDeleting: boolean;
@@ -10,14 +9,14 @@ interface ActionButtonsProps {
     deletingLabel?: string;
 }
 
-export const ActionButtons: React.FC<ActionButtonsProps> = ({
+export const ActionButtons = ({
     registroId,
     onDelete,
     isDeleting,
-    viewLabel = 'Ver',
-    deleteLabel = 'Eliminar',
-    deletingLabel = 'Eliminando...'
-}) => {
+    viewLabel,
+    deleteLabel,
+    deletingLabel
+}: ActionButtonsProps) => {
     return (
         <div className="flex space-x-2">
             <Link

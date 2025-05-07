@@ -9,7 +9,6 @@ export function useRegistros() {
     const [deleteLoading, setDeleteLoading] = useState(false);
     const [deletingId, setDeletingId] = useState<string | null>(null);
 
-    // Verificar si hay datos al cargar la página
     useEffect(() => {
         async function checkData() {
             await indexedDBService.init();
@@ -26,7 +25,6 @@ export function useRegistros() {
         checkData();
     }, []);
 
-    // Cargar registros desde IndexedDB
     const loadRegistros = async () => {
         try {
             setLoading(true);
@@ -40,7 +38,6 @@ export function useRegistros() {
         }
     };
 
-    // Generar datos semilla
     const handleGenerateSeed = async () => {
         try {
             setSeedLoading(true);
@@ -53,7 +50,6 @@ export function useRegistros() {
         }
     };
 
-    // Eliminar un registro específico
     const handleDeleteRegistro = async (id: string) => {
         try {
             setDeletingId(id);
@@ -68,9 +64,7 @@ export function useRegistros() {
         }
     };
 
-    // Eliminar todos los registros
     const handleDeleteAll = async () => {
-        // Mostrar una confirmación al usuario
         if (!window.confirm("¿Estás seguro que deseas eliminar todos los registros? Esta acción no se puede deshacer.")) {
             return;
         }

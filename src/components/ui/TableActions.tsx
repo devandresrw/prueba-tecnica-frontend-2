@@ -1,4 +1,3 @@
-import React from 'react';
 import { LoadingSpinner } from '@/components/ui/LoadingSpiner'
 import { FiRefreshCw, FiTrash } from 'react-icons/fi';
 import { ImSpinner8 } from 'react-icons/im';
@@ -16,18 +15,7 @@ interface TableActionsProps {
     className?: string;
 }
 
-// Componente Spinner simple
-const Spinner = ({ size = "sm" }: { size?: "sm" | "md" | "lg" }) => {
-    const sizeClasses = {
-        sm: "w-4 h-4",
-        md: "w-5 h-5",
-        lg: "w-6 h-6"
-    };
 
-    return (
-        <ImSpinner8 className={`${sizeClasses[size]} animate-spin`} />
-    );
-};
 
 export default function TableActions({
     onRegenerate,
