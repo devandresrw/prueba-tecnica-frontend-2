@@ -1,4 +1,6 @@
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/react"
+import Script from 'next/script';
 import "./globals.css";
 
 export const viewport: Viewport = {
@@ -21,6 +23,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
+      <head>
+        <Script>
+          <Analytics />
+        </Script>
+      </head>
       <body className="bg-mybg dark:bg-mybgdark flex justify-center items-center
       p-2 md:p-5 font-Man">
         {children}
