@@ -15,8 +15,9 @@ const Header = () => {
 
     return (
         <div className="flex flex-col items-center justify-between
-        border-0 border-b-[0.2px] border-transparent/50 border-mybgdark dark:border-mybg
-        pb-3 w-full gap-3">
+        border-0 border-b-[0.2px] border-transparent/50
+         border-mybgdark dark:border-mybg pb-3 w-full gap-3
+         lg:flex-row lg:gap-3 ">
             <div className="relative">
                 <Image
                     src={theme ? '/color.png' : '/gris.png'}
@@ -28,8 +29,8 @@ const Header = () => {
             </div>
             <div className='flex items-center justify-center
             gap-5'>
-                <h2 className='font-Man dark:text-mybg text-mybgdark
-                text-xl'>Prueba tecnica - Frontend II</h2>
+                <h2 className='font-Man text-sm dark:text-mybg text-mybgdark
+                md:text-xl'>Prueba tecnica - Frontend II</h2>
                 <SwitchComponent />
             </div>
         </div>

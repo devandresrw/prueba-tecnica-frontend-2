@@ -24,15 +24,17 @@ const Scene = () => {
     }, [theme]);
 
     return (
-        <div className="w-full h-52">
-            <Canvas camera={{ position: [0, 0, 1] }}
-                className='h-full'>
-                <color attach="background" args={backgroundColor} />
-                <ambientLight intensity={0.5} />
-                <pointLight position={[10, 10, 10]} intensity={1} />
-                <SvgModel />
-            </Canvas>
-        </div>
+
+        <Canvas camera={{ position: [0, 0, 1] }}
+            className='w-full h-full'
+            style={{ width: '100%', height: '200px' }}
+        >
+            <color attach="background" args={backgroundColor} />
+            <ambientLight intensity={0.5} />
+            <pointLight position={[10, 10, 10]} intensity={1} />
+            <SvgModel />
+        </Canvas>
+
     );
 };
 
