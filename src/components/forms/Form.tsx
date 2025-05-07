@@ -103,7 +103,9 @@ const Form = () => {
                             {...register('companion')}
                             type="checkbox"
                             id="companion"
-                            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                            className={clsx(`my-checkbox`, {
+                                ['my-checkbox-error']: errors.companion
+                            })}
                         />
                         <label htmlFor="companion" className="ml-2 block text-sm text-gray-900 dark:text-gray-300">
                             ¿Vendrás con acompañante?
@@ -135,7 +137,10 @@ const Form = () => {
                             {...register('terms')}
                             type="checkbox"
                             id="terms"
-                            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                            className={clsx(`my-checkbox`, {
+                                ['my-checkbox-error']: errors.companion
+                            })}
+
                         />
                         <span className="ml-2 block text-sm text-gray-900 dark:text-gray-300">
                             Acepto los términos y condiciones*

@@ -21,7 +21,7 @@ export default function Home() {
   return (
     <main className=" min-h-screen p-5 bg-mybgcontend dark:bg-mybgcontenddark rounded-lg
     transition-all duration-500 ease-in-out flex flex-col justify-between items-center
-    max-w-[18rem] md:max-w-[30rem] lg:max-w-[40rem] border-[0.2px] border-mybgdark dark:border-mybg border-transparent/50">
+    min-w-[18rem] md:min-w-[30rem] lg:min-w-[40rem] border-[0.2px] border-mybgdark dark:border-mybg border-transparent/50">
       <Header />
       <section className="flex flex-col  justify-center items-center w-full">
         <div className="w-full">

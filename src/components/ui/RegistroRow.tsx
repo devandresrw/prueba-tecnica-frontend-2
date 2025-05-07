@@ -1,6 +1,8 @@
 import React from 'react';
-import ActionButtons from './ActionButtons';
-import Link from 'next/link';
+import { FiEye, FiTrash } from 'react-icons/fi';
+import { ImSpinner8 } from 'react-icons/im';
+import { useRouter } from 'next/navigation';
+
 
 interface Registro {
     id: string;
@@ -18,47 +20,91 @@ interface RegistroRowProps {
     deletingId: string | null;
 }
 
-export const RegistroRow: React.FC<RegistroRowProps> = ({
-    registro,
-    onDelete,
-    deletingId
-}) => {
+const RegistroRow: React.FC<RegistroRowProps> = ({ registro, onDelete, deletingId }) => {
+    const router = useRouter();
+    const isDeleting = deletingId === registro.id;
+    const formattedDate = new Date(registro.createdAt).toLocaleDateString();
+
+
+    // Acortar el ID para mostrarlo
+    const shortId = registro.id.substring(0, 8) + '...';
+
+    // Función para navegar al detalle del registro
+    const handleViewClick = () => {
+        // Implementar navegación al detalle
+        console.log(`Ver registro: ${registro.id}`);
+        router.push(`/registros/${registro.id}`);
+    };
+
     return (
-        <tr>
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                <Link
-                    href={`/registros/${registro.id}`}
-                    className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 hover:underline"
+        <tr className="hover:bg-gray-50 dark:hover:bg-gray-700">
+            {/* ID - Visible solo en escritorio */}
+            <td className="hidden lg:table-cell px-3 py-2 sm:px-4 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                <button
+                    onClick={handleViewClick}
+                    className="hover:text-blue-600 dark:hover:text-blue-400 hover:underline"
                 >
-                    {registro.id.slice(0, 8)}...
-                </Link>
+                    {shortId}
+                </button>
             </td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
-                <Link
-                    href={`/registros/${registro.id}`}
-                    className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 hover:underline"
+
+            {/* Nombre - Visible en todos los dispositivos */}
+            <td className="px-3 py-2 sm:px-4 sm:py-3 whitespace-nowrap text-xs sm:text-sm font-medium text-gray-900 dark:text-white truncate max-w-[180px]">
+                <button
+                    onClick={handleViewClick}
+                    className="hover:text-blue-600 dark:hover:text-blue-400 hover:underline text-left"
                 >
                     {registro.fullName}
-                </Link>
+                </button>
             </td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+
+            {/* Email - Visible en tablet y desktop */}
+            <td className="hidden sm:table-cell px-3 py-2 sm:px-4 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500 dark:text-gray-400 truncate max-w-[200px]">
                 {registro.email}
             </td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+
+            {/* Semestre - Visible solo en escritorio */}
+            <td className="hidden lg:table-cell px-3 py-2 sm:px-4 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                 {registro.semester}
             </td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                {registro.companion ? (registro.companionName || 'Sí') : 'No'}
+
+            {/* Acompañante - Visible solo en escritorio */}
+            <td className="hidden lg:table-cell px-3 py-2 sm:px-4 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                {registro.companion ? (
+                    <span title={registro.companionName || ""}>Sí</span>
+                ) : (
+                    "No"
+                )}
             </td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                {new Date(registro.createdAt).toLocaleDateString()}
+
+            {/* Fecha - Visible solo en escritorio */}
+            <td className="hidden lg:table-cell px-3 py-2 sm:px-4 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                {formattedDate}
             </td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm">
-                <ActionButtons
-                    registroId={registro.id}
-                    onDelete={onDelete}
-                    isDeleting={deletingId === registro.id}
-                />
+
+            {/* Acciones - Visible en todos los dispositivos */}
+            <td className="px-3 py-2 sm:px-4 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-right">
+                <div className="flex justify-end items-center space-x-3">
+                    <button
+                        onClick={handleViewClick}
+                        className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+                        title="Ver detalle"
+                    >
+                        <FiEye className="w-4 h-4" />
+                    </button>
+                    <button
+                        onClick={() => !isDeleting && onDelete(registro.id)}
+                        disabled={isDeleting}
+                        className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 disabled:opacity-50"
+                        title="Eliminar registro"
+                    >
+                        {isDeleting ? (
+                            <ImSpinner8 className="w-4 h-4 animate-spin" />
+                        ) : (
+                            <FiTrash className="w-4 h-4" />
+                        )}
+                    </button>
+                </div>
             </td>
         </tr>
     );

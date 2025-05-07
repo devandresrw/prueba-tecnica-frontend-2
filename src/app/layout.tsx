@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className="bg-mybg dark:bg-mybgdark flex justify-center items-center
-      p-2 md:p-5">
+      p-2 md:p-5 font-Man">
         {children}
       </body>
     </html>

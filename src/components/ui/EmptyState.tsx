@@ -8,12 +8,12 @@ interface EmptyStateProps {
     onAction: () => void;
 }
 
-export const EmptyState: React.FC<EmptyStateProps> = ({
+export const EmptyState = ({
     message = 'No hay registros en la base de datos.',
     buttonLabel = 'Generar datos de prueba',
     loadingLabel = 'Generando...',
     isLoading = false,
-    onAction
+    onAction = () => { },
 }) => {
     return (
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 text-center">
@@ -30,5 +30,3 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
         </div>
     );
 };
-
-export default EmptyState;

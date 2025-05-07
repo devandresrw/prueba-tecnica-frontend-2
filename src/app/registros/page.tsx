@@ -3,7 +3,7 @@ import { useRegistros } from '@/hooks/useRegistros';
 import { useState } from 'react';
 import LoadingSpinner from '@/components/ui/LoadingSpiner';
 import PageHeader from '@/components/ui/PageHeader';
-import EmptyState from '@/components/ui/EmptyState';
+import { EmptyState } from '@/components/ui/EmptyState';
 import TableActions from '@/components/ui/TableActions';
 import RegistrosTable from '@/components/ui/RegistrosTable';
 import DeleteConfirmation from '@/components/ui/DeleteConfirmation';
@@ -40,7 +40,7 @@ export default function Registros() {
     }
 
     return (
-        <div className="min-h-screen p-8 bg-mybg dark:bg-mybgdark">
+        <div className="min-h-screen px-3 py-4 sm:px-4 sm:py-6 md:p-8 bg-mybg dark:bg-mybgdark">
             <PageHeader title="Registros" />
 
             <div className="max-w-6xl mx-auto">
@@ -54,8 +54,8 @@ export default function Registros() {
                     />
                 ) : (
                     <div>
-                        <div className="flex justify-between mb-4">
-                            <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 sm:mb-6">
+                            <h2 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-white">
                                 Lista de registros ({registros.length})
                             </h2>
 
@@ -65,14 +65,17 @@ export default function Registros() {
                                 isRegenerating={seedLoading}
                                 isDeleting={deleteLoading}
                                 recordCount={registros.length}
+                                className="w-full sm:w-auto"
                             />
                         </div>
 
-                        <RegistrosTable
-                            registros={registros}
-                            onDeleteRegistro={handleDeleteRegistro}
-                            deletingId={deletingId}
-                        />
+                        <div className="overflow-x-auto rounded-lg shadow">
+                            <RegistrosTable
+                                registros={registros}
+                                onDeleteRegistro={handleDeleteRegistro}
+                                deletingId={deletingId}
+                            />
+                        </div>
                     </div>
                 )}
             </div>
