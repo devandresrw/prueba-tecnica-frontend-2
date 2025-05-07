@@ -12,6 +12,8 @@ const config: Config = {
       colors: {
         "mybg": "#F5EAF7",
         "mybgdark": "#292929",
+        "mybgcontend": "#fafaf2",
+        "mybgcontenddark": "#3e3a34"
       },
       fontFamily: {
         "Man": ["Manrope", "sans-serif"],

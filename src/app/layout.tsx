@@ -21,7 +21,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className="">
+      <body className="bg-mybg dark:bg-mybgdark flex justify-center items-center
+      p-5">
         {children}
       </body>
     </html>

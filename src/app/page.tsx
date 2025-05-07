@@ -19,15 +19,15 @@ const Form = dynamic(
 
 export default function Home() {
   return (
-    <main className="bg-mybg dark:bg-mybgdark min-h-screen p-10
+    <main className=" min-h-screen p-10 bg-mybgcontend dark:bg-mybgcontenddark rounded-lg
     transition-all duration-500 ease-in-out flex flex-col justify-between items-center
-    ">
+    max-w-96 border-[0.2px] border-mybgdark dark:border-mybg border-transparent/50">
       <Header />
-      <section className="flex justify-center items-center w-full">
-        <div className="flex-1">
+      <section className="flex flex-col  justify-center items-center w-full">
+        <div className="">
           <Scene />
         </div>
-        <div className="flex-1">
+        <div className="">
           <RecaptchaProvider>
             <Form />
           </RecaptchaProvider>

@@ -14,14 +14,14 @@ const Header = () => {
     const theme = useThemeStore(e => e.theme)
 
     return (
-        <div className="flex items-center justify-between
-        border-0 border-b-2 border-mybgdark dark:border-mybg
-        pb-3 w-full">
+        <div className="flex flex-col items-center justify-between
+        border-0 border-b-[0.2px] border-transparent/50 border-mybgdark dark:border-mybg
+        pb-3 w-full gap-3">
             <div className="relative">
                 <Image
                     src={theme ? '/color.png' : '/gris.png'}
                     alt="Logo"
-                    width={100}
+                    width={150}
                     height={100}
                     className="h-auto w-auto object-cover "
                 />

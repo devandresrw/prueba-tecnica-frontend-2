@@ -39,12 +39,12 @@ const Form = () => {
     }, [companionValue, setCompain]);
 
     return (
-        <div className='border-2 border-mybgdark dark:border-mybg rounded-lg p-5'>
+        <div className='border-[0.2px] border-mybgdark dark:border-mybg rounded-lg p-5'>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
-                <div className='flex flex-col md:flex-row gap-4 mb-4'>
-                    <div className='flex-1'>
+                <div className='flex flex-col gap-4 mb-4'>
+                    <div className=''>
                         <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Nombre completo*
+                            Nombre completo:*
                         </label>
                         <input
                             {...register('fullName')}
@@ -54,9 +54,9 @@ const Form = () => {
                         />
                         <Error>{errors.fullName?.message}</Error>
                     </div>
-                    <div className='flex-1'>
+                    <div className=''>
                         <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Email institucional (.edu.co)*
+                            Email institucional (.edu.co):*
                         </label>
                         <input
                             {...register('email')}
