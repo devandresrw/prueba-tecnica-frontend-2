@@ -5,7 +5,8 @@
 
 
 .my-input{
-    @apply border-2 border-gray-300 rounded-lg p-2;
+    @apply border-[0.1px] border-gray-300 rounded-lg p-2 border-transparent/50 h-8
+    w-full;
 }
 .my-input:focus{
     @apply border-blue-500 outline-none;
@@ -15,5 +16,4 @@
 }
 .my-input-error{
     @apply border-red-500;
-
 }

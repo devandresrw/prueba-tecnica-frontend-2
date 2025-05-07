@@ -7,7 +7,7 @@ type ErrorComponentProps = {
 
 const ErrorComponent = ({ className, children }: ErrorComponentProps) => {
     return (
-        <span className={`block h-5 mt-2 text-mybgdark dark:text-mybg ${className}`}>
+        <span className={`block h-5 text-xs  text-mybgdark dark:text-mybg ${className}`}>
             {children}
         </span>
     );

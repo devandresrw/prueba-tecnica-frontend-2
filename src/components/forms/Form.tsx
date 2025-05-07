@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import { memo, useEffect } from 'react';
 import { useFormHandle } from '@/hooks/useForm';
 import { useWatch } from 'react-hook-form';
+import clsx from 'clsx';
 
 const Error = dynamic(
     () => import('@/components/ui/Error').then((mod) => mod.ErrorComponentMemo),
@@ -14,6 +15,7 @@ const Form = () => {
         register,
         handleSubmit,
         control,
+        setValue,
         compain,
         setCompain,
         onSubmit,
@@ -36,55 +38,63 @@ const Form = () => {
     // Efecto para actualizar el estado local cuando cambia el valor del checkbox
     useEffect(() => {
         setCompain(companionValue);
-    }, [companionValue, setCompain]);
+        if (!companionValue) {
+            setValue('companionName', '');
+        }
+    }, [companionValue, setCompain, setValue]);
 
     return (
         <div className='border-[0.2px] border-mybgdark dark:border-mybg rounded-lg p-5'>
-            <form onSubmit={handleSubmit(onSubmit)} noValidate>
-                <div className='flex flex-col gap-4 mb-4'>
-                    <div className=''>
-                        <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Nombre completo:*
-                        </label>
-                        <input
-                            {...register('fullName')}
-                            type="text"
-                            id="fullName"
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
-                        />
-                        <Error>{errors.fullName?.message}</Error>
-                    </div>
-                    <div className=''>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Email institucional (.edu.co):*
-                        </label>
-                        <input
-                            {...register('email')}
-                            type="email"
-                            id="email"
-                            placeholder="correo@universidad.edu.co"
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
-                        />
-                        <Error>{errors.email?.message}</Error>
-                    </div>
+            <form
+                onSubmit={handleSubmit(onSubmit)} noValidate>
+                <div className='flex flex-col gap-1 h-16 mb-4 w-full'>
+                    <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Nombre completo:*
+                    </label>
+                    <input
+                        {...register('fullName')}
+                        type="text"
+                        id="fullName"
+                        placeholder='Nombre y apellido'
+                        className={clsx(`my-input`, {
+                            ['my-input-error']: errors.fullName
+                        })}
+                    />
+                    <Error>{errors.fullName?.message}</Error>
+                </div>
+                <div className='flex flex-col gap-1 h-16 mb-4 w-full'>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Email institucional (.edu.co):*
+                    </label>
+                    <input
+                        {...register('email')}
+                        type="email"
+                        id="email"
+                        placeholder="correo@universidad.edu.co"
+                        className={clsx(`my-input`, {
+                            ['my-input-error']: errors.email
+                        })}
+                    />
+                    <Error>{errors.email?.message}</Error>
                 </div>
 
-                <div className='flex flex-col md:flex-row gap-4 mb-4'>
-                    <div className='flex-1'>
-                        <label htmlFor="semester" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Semestre (1-10)*
-                        </label>
-                        <input
-                            {...register('semester')}
-                            type="number"
-                            id="semester"
-                            min="1"
-                            max="10"
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
-                        />
-                        <Error>{errors.semester?.message}</Error>
-                    </div>
-                    <div className='flex-1'></div>
+
+                <div className='flex flex-col  mb-4'>
+                    <label htmlFor="semester" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Semestre:*
+                    </label>
+                    <input
+                        {...register('semester')}
+                        type="number"
+                        id="semester"
+                        min="1"
+                        max="10"
+                        placeholder='Semestre actual 1 - 10'
+                        className={clsx(`my-input`, {
+                            ['my-input-error']: errors.semester
+                        })}
+                    />
+                    <Error>{errors.semester?.message}</Error>
                 </div>
 
                 <div className='mb-4'>
@@ -110,8 +120,10 @@ const Form = () => {
                             {...register('companionName')}
                             type="text"
                             id="companionName"
-                            placeholder="Nombre completo del acompañante"
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
+                            placeholder="Nombre completo"
+                            className={clsx(`my-input`, {
+                                ['my-input-error']: errors.companionName
+                            })}
                         />
                         <Error>{errors.companionName?.message}</Error>
                     </div>
