@@ -1,36 +1,102 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Prueba Técnica Frontend II - Formulario Inscripcion Fiesta
 
-## Getting Started
+Este proyecto es una aplicación web desarrollada con Next.js que implementa un formulario interactivo con validaciones, almacenamiento local y efectos visuales.
 
-First, run the development server:
+## Requisitos previos
+
+- Node.js 18 o superior
+- npm 
+
+## Instalación y ejecución
+
+Para instalar y ejecutar la aplicación en un solo paso:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run all
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Este comando instalará todas las dependencias y luego iniciará el servidor de desarrollo.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Alternativamente, puedes ejecutar cada paso por separado:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# Instalar dependencias
+npm install
 
-## Learn More
+# Iniciar servidor de desarrollo
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Comandos disponibles
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Comando | Descripción |
+|---------|-------------|
+| `npm run all` | Instala dependencias e inicia el servidor de desarrollo |
+| `npm run dev` | Inicia el servidor de desarrollo |
+| `npm run build` | Genera una versión optimizada para producción |
+| `npm run start` | Ejecuta la versión de producción |
+| `npm run lint` | Ejecuta el linter para verificar el código |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Características principales
 
-## Deploy on Vercel
+- **Formulario interactivo** con validaciones en tiempo real mediante Zod y React Hook Form
+- **Modo oscuro/claro** implementado con Tailwind CSS y Zustand
+- **Visualizaciones 3D** utilizando React Three Fiber
+- **Almacenamiento local** con IndexedDB para guardar los registros del formulario
+- **Protección contra bots** con Google reCAPTCHA v3
+- **Interfaz responsiva** adaptada a diferentes dispositivos
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Flujos de prueba
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 1. Validación del formulario
+
+- Abrir [http://localhost:3000](http://localhost:3000)
+- Intentar enviar el formulario vacío para ver las validaciones
+- Probar diferentes correos electrónicos (el sistema sólo acepta correos con dominio `.edu.co`)
+- Marcar "¿Vendrás con acompañante?" para ver cómo aparece el campo adicional
+
+### 2. Gestión de registros
+
+- Enviar un formulario correctamente
+- Visitar [http://localhost:3000/registros](http://localhost:3000/registros)
+- Usar el botón "Generar datos de prueba" para poblar la tabla
+- Probar las funciones de eliminar registros
+- Puedes hacer una curl para probar el enpoind /inscripciones
+
+```
+curl -X POST http://localhost:3000/api/inscripciones \
+  -H "Content-Type: application/json" \
+  -d '{
+    "fullName": "Nombre Completo",
+    "email": "ejemplo@universidad.edu.co",
+    "telefono": "1234567890",
+    "semester": 5,
+    "traerAcompanante": false,
+    "terms": true,
+    "comentarios": "Prueba desde curl"
+  }'
+```
+
+### 3. Vista detalle
+
+- En la página de registros, hacer clic en cualquier ID o nombre
+- Explorar la página de detalle del registro
+- Probar la funcionalidad de eliminar desde el detalle
+
+### 4. Cambio de tema
+
+- Usar el botón de sol/luna en la cabecera para cambiar entre modo claro y oscuro
+
+## Notas técnicas
+
+- El proyecto utiliza IndexedDB para simular una base de datos en el navegador
+- Los datos no persisten entre diferentes navegadores o después de limpiar el almacenamiento
+- El reCAPTCHA v3 está configurado con claves de prueba
+
+## Licencia
+
+Este proyecto es parte de una prueba técnica de desarrollo frontend.
+
+---
+
+Desarrollado por Andrés Roldán
